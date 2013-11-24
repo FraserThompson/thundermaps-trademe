@@ -12,8 +12,14 @@ import requests
 import requests_oauthlib
 import json
 import time
+import datetime
 
+# Internal requests object used to perform requests.
+# Is replaced by an OAuth1Session object when authenticated.
 trademe = requests
+
+# TradeMe category numbers.
+RENTAL_CATEGORY = 4233
 
 # Authenticate with the TradeMe API.
 def authenticate(consumer_key, consumer_secret, oauth_token, oauth_secret):
@@ -27,7 +33,7 @@ def unauthenticate():
 
 
 # Get a list of rentals from TradeMe.
-def getRentals(limit=25):
+def getRentals(limit=25, since=time.time()-86400):
 	global trademe
 	more = True
 	page = None
@@ -37,10 +43,13 @@ def getRentals(limit=25):
 	# While there are more listings to get, get them.
 	while more:	
 		# Connect to TradeMe and get a list of rentals.
+		url = "http://api.trademe.co.nz/v1/Search/General.json?category=%d" % RENTAL_CATEGORY
 		if limit == None:
-			url = "http://api.trademe.co.nz/v1/Search/Property/Rental.json?rows=500"
+			url = url + "&rows=500"
 		else:
-			url = "http://api.trademe.co.nz/v1/Search/Property/Rental.json?rows=%d" % (limit - count)
+			url = url + "&rows=%d" % (limit - count)
+		if since != None:
+			url = url + "&date_from=%s" % datetime.datetime.fromtimestamp(since).strftime('%Y-%m-%dT%H:%M:%SZ')
 		if page != None:
 			url = url + "&page=%d" % page
 		try:
@@ -54,7 +63,7 @@ def getRentals(limit=25):
 			rentals.append(rental)
 			count = count + 1
 		# Get next page if there are more listings.
-		if result["Page"] * result["PageSize"] >= result["TotalCount"] or (limit != None and count >= limit):
+		if (count >= result["TotalCount"]) or (limit != None and count >= limit):
 			more = None
 		else:
 			page = result["Page"] + 1

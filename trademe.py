@@ -49,22 +49,20 @@ def getRentals(limit=25, since=time.time()-86400):
 
 	# While there are more listings to get, get them.
 	while more:	
-		# Connect to TradeMe and get a list of rentals.
-		url = "http://api.trademe.co.nz/v1/Search/General.json?category=%d" % RENTAL_CATEGORY
-		if limit == None:
-			url = url + "&rows=500"
-		else:
-			url = url + "&rows=%d" % (limit - count)
+		# Build URL.
+		url = "http://api.trademe.co.nz/v1/Search/General.json"
+		params = {"category": RENTAL_CATEGORY}
+		params["rows"] = 500 if limit == None else limit - count
 		if since != None:
-			url = url + "&date_from=%s" % datetime.datetime.fromtimestamp(since).strftime('%Y-%m-%dT%H:%M:%SZ')
+			params["date_from"] = datetime.datetime.fromtimestamp(since).strftime('%Y-%m-%dT%H:%M:%SZ')
 		if page != None:
-			url = url + "&page=%d" % page
+			params["page"] = page
 		# Print debug information in debug mode.
 		if debug == True:
-			print "trademe: %s" % url
+			print "trademe: [url=%s, params=%s]" % (url, params)
 		# Peform the request.
 		try:
-			resp = trademe.get(url)
+			resp = trademe.get(url, params=params)
 			result = resp.json()
 		except Exception as e:
 			print "Error retrieving rentals: %s" % e

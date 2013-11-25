@@ -14,9 +14,10 @@ import json
 def sendReports(key, account_id, reports):
 	try:
 		data = json.dumps({"reports": reports})
-		url = "http://app.thundermaps.com/api/reports/?account_id=%d&key=%s" % (account_id, key)
+		url = "http://app.thundermaps.com/api/reports/"
+		params = {"account_id": account_id, "key": key}
 		headers = {"Content-Type": "application/json"}
-		resp = requests.post(url, data=data, headers=headers)
+		resp = requests.post(url, params=params, data=data, headers=headers)
 		return resp
 	except Exception as e:
 		print "Error creating reports: %s" % e
@@ -25,8 +26,9 @@ def sendReports(key, account_id, reports):
 # Get a list of reports from ThunderMaps.
 def getReports(key, account_id):
 	try:
-		url = "http://app.thundermaps.com/api/reports/?account_id=%d&key=%s" % (account_id, key)
-		resp = requests.get(url)
+		url = "http://app.thundermaps.com/api/reports/"
+		params = {"account_id": account_id, "key": key}
+		resp = requests.get(url, params=params)
 		result = resp.json()
 		return result
 	except Exception as e:
@@ -36,8 +38,9 @@ def getReports(key, account_id):
 # Delete a specific report from ThunderMaps.
 def deleteReport(key, report_id):
 	try:
-		url = "http://app.thundermaps.com/api/reports/%d/?key=%s" % (report_id, key)
-		resp = requests.delete(url)
+		url = "http://app.thundermaps.com/api/reports/%d/" % report_id
+		params = {"key": key}
+		resp = requests.delete(url, params=params)
 		return resp
 	except Exception as e:
 		print "Error deleting report %d: %s" % (id, e)

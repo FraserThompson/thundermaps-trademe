@@ -18,6 +18,9 @@ import datetime
 # Is replaced by an OAuth1Session object when authenticated.
 trademe = requests
 
+# Whether to print debug information.
+debug = False
+
 # TradeMe category numbers.
 RENTAL_CATEGORY = 4233
 
@@ -31,6 +34,10 @@ def unauthenticate():
 	global trademe
 	trademe = requests
 
+# Set debug mode.
+def debug(on=True):
+	global debug
+	debug = on
 
 # Get a list of rentals from TradeMe.
 def getRentals(limit=25, since=time.time()-86400):
@@ -52,6 +59,10 @@ def getRentals(limit=25, since=time.time()-86400):
 			url = url + "&date_from=%s" % datetime.datetime.fromtimestamp(since).strftime('%Y-%m-%dT%H:%M:%SZ')
 		if page != None:
 			url = url + "&page=%d" % page
+		# Print debug information in debug mode.
+		if debug == True:
+			print "trademe: %s" % url
+		# Peform the request.
 		try:
 			resp = trademe.get(url)
 			result = resp.json()

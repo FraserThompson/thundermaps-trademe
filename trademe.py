@@ -54,7 +54,7 @@ def getRentals(limit=25, since=time.time()-86400):
 		params = {"category": RENTAL_CATEGORY}
 		params["rows"] = 500 if limit == None else limit - count
 		if since != None:
-			params["date_from"] = datetime.datetime.fromtimestamp(since).strftime('%Y-%m-%dT%H:%M:%SZ')
+			params["date_from"] = datetime.datetime.utcfromtimestamp(since).strftime('%Y-%m-%dT%H:%M:%SZ')
 		if page != None:
 			params["page"] = page
 		# Print debug information in debug mode.

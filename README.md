@@ -92,3 +92,5 @@ properties_updater.add_category("rentals", TRADEME_CATEGORY_RENTAL, THUNDERMAPS_
 # Start updating.
 properties_updater.start()
 ```
+
+**Important:** The updater module uses `.lastupdate_` files to store the timestamp of the last update for each category. If you delete these files then it will default to generating reports from the current time.

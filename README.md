@@ -1,7 +1,7 @@
 Thundermaps-TradeMe
 ===================
 
-This repository provides Python modules for using the TradeMe API to get property listings, and using the ThunderMaps API to post reports.
+This repository provides Python modules for using the TradeMe API to get property listings and using the ThunderMaps API to post reports, and a module that periodically creates Thundermaps reports for the latest TradeMe listings.
 
 Dependencies
 ------------
@@ -17,13 +17,16 @@ Usage
 
 To use the TradeMe module, import it into your code using `import trademe`.
 
-To get listings for rental properties, you can use the `getRentals()` method:
+To get listings for a certain category, you can use the `getListings` method:
 
 ```python
 import trademe
 
+# Categories.
+TRADEME_CATEGORY_RENTAL = 4233
+
 # Get rentals from TradeMe.
-rentals = trademe.getRentals(limit=10)
+listings = trademe.getListings(category_id=TRADEME_CATEGORY_RENTAL, limit=10)
 ```
 
 If you have a TradeMe developer account and have generated an OAuth token and OAuth secret, then you can authenticate with the TradeMe API prior to making a request in order to increase you rate limit and the number of results you can get per API call. E.g.
@@ -37,11 +40,14 @@ TRADEME_API_SECRET = "..."
 TRADEME_OAUTH_KEY = "..."
 TRADEME_OAUTH_SECRET = "..."
 
+# Categories.
+TRADEME_CATEGORY_RENTAL = 4233
+
 # Authenticate with TradeMe.
 trademe.authenticate(TRADEME_API_KEY, TRADEME_API_SECRET, TRADEME_OAUTH_KEY, TRADEME_OAUTH_SECRET)
 
 # Get rentals from TradeMe.
-rentals = trademe.getRentals(limit=10)
+listings = trademe.getListings(category_id=TRADEME_CATEGORY_RENTAL, limit=10)
 ```
 
 ### Thundermaps module
@@ -59,12 +65,30 @@ ACCOUNT_ID = ...
 reports = thundermaps.getReports(THUNDERMAPS_API_KEY, ACCOUNT_ID)
 ```
 
-### Example
+### Updater module
 
-An example script combining both the TradeMe and Thundermaps API is available in `example.py`, although it does require the `...`s to be replaced with valid API keys.
-The script is intended to be run automatically in the background as it will check TradeMe for the latest rental listings and post them to ThunderMaps every half an hour.
+The updater module combines both the TradeMe and ThunderMaps module and provides a higher level interface for generating ThunderMaps reports for the latest TradeMe listings.
+Using the updater module typically consists of these steps:
 
-When the script is started it will retrieve all listings in the last 24 hours, but once that has been done every subsequent query will only get listings added since the previous query.
-This does mean that if the script is restarted, it will again get the latest 24 hours of listings resulting in duplicate reports.
+* Creating a new instance of `Updater` with a ThunderMaps API key.
+* *(Optional)* Authenticating with TradeMe.
+* Adding categories to generate reports for.
+* Starting the updater.
 
-**Note:** Currently the Thundermaps API does not properly handle multiple reports being added at once, but this will be fixed in the near future.
+An example usage is shown below.
+
+```
+import updater
+
+# Define categories, keys, and accounts here.
+
+# Create updater and authenticate.
+properties_updater = updater.Updater(THUNDERMAPS_API_KEY)
+properties_updater.authenticate(TRADEME_API_KEY, TRADEME_API_SECRET, TRADEME_OAUTH_KEY, TRADEME_OAUTH_SECRET)
+
+# Add categories.
+properties_updater.add_category("rentals", TRADEME_CATEGORY_RENTAL, THUNDERMAPS_ACCOUNT_RENTALS, THUNDERMAPS_CATEGORY_RENTAL)
+
+# Start updating.
+properties_updater.start()
+```

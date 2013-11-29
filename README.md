@@ -98,7 +98,7 @@ properties_updater.start()
 
 **Important:** The updater module uses `.lastupdate_` files to store the timestamp of the last update for each category. If you delete these files then it will default to generating reports from the current time.
 
-### Current Usage
+## Current Usage
 
 These modules are currently used in several Thundermaps accounts:
 

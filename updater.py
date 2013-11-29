@@ -6,7 +6,7 @@ class Updater:
 	categories = {}
 
 	def __init__(self, key):
-		self.thundermaps_api_key = key
+		self.thundermaps = thundermaps.ThunderMaps(key)
 		self.trademe = trademe.TradeMe()
 
 	def authenticate(self, key, secret, oauth_key, oauth_secret):
@@ -63,7 +63,7 @@ class Updater:
 
 				# If there is at least one report, send the reports to Thundermaps.
 				if len(reports) > 0:
-					thundermaps.sendReports(self.thundermaps_api_key, category["account_id"], reports)
+					self.thundermaps.sendReports(category["account_id"], reports)
 					print "Submitted %d reports..." % len(reports)
 
 				# Save the timestamp of the last update.

@@ -26,10 +26,6 @@ class TradeMe:
 	def authenticate(self, consumer_key, consumer_secret, oauth_token, oauth_secret):
 		self.trademe = requests_oauthlib.OAuth1Session(consumer_key, client_secret=consumer_secret, resource_owner_key=oauth_token, resource_owner_secret=oauth_secret)
 
-	# Unauthenticate from the TradeMe API.
-	def unauthenticate(self):
-		self.trademe = requests
-
 	# Set debug mode.
 	def debug(self, on=True):
 		self.debug = on

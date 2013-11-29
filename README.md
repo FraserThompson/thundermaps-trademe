@@ -15,7 +15,7 @@ Usage
 
 ### TradeMe module
 
-To use the TradeMe module, import it into your code using `import trademe`.
+To use the TradeMe module, import it into your code using `import trademe` and create an instance of the `TradeMe` class.
 
 To get listings for a certain category, you can use the `getListings` method:
 
@@ -26,7 +26,8 @@ import trademe
 TRADEME_CATEGORY_RENTAL = 4233
 
 # Get rentals from TradeMe.
-listings = trademe.getListings(category_id=TRADEME_CATEGORY_RENTAL, limit=10)
+my_trademe = trademe.TradeMe()
+listings = my_trademe.getListings(category_id=TRADEME_CATEGORY_RENTAL, limit=10)
 ```
 
 If you have a TradeMe developer account and have generated an OAuth token and OAuth secret, then you can authenticate with the TradeMe API prior to making a request in order to increase you rate limit and the number of results you can get per API call. E.g.
@@ -44,15 +45,16 @@ TRADEME_OAUTH_SECRET = "..."
 TRADEME_CATEGORY_RENTAL = 4233
 
 # Authenticate with TradeMe.
+my_trademe = trademe.TradeMe()
 trademe.authenticate(TRADEME_API_KEY, TRADEME_API_SECRET, TRADEME_OAUTH_KEY, TRADEME_OAUTH_SECRET)
 
 # Get rentals from TradeMe.
-listings = trademe.getListings(category_id=TRADEME_CATEGORY_RENTAL, limit=10)
+listings = my_trademe.getListings(category_id=TRADEME_CATEGORY_RENTAL, limit=10)
 ```
 
 ### Thundermaps module
 
-To use the Thundermaps module, import it into your code using `import thundermaps`. All of the methods in this module require your Thundermaps API key as the first argument. E.g.
+To use the Thundermaps module, import it into your code using `import thundermaps` and create an instance of the `ThunderMaps` class using your Thundermaps API key. E.g.
 
 ```python
 import thundermaps
@@ -62,7 +64,8 @@ THUNDERMAPS_API_KEY = "..."
 ACCOUNT_ID = ...
 
 # Get reports for an account.
-reports = thundermaps.getReports(THUNDERMAPS_API_KEY, ACCOUNT_ID)
+my_thundermaps = thundermaps.ThunderMaps(THUNDERMAPS_API_KEY)
+reports = thundermaps.getReports(ACCOUNT_ID)
 ```
 
 ### Updater module

@@ -1,7 +1,7 @@
 Thundermaps-TradeMe
 ===================
 
-This repository provides Python modules for using the TradeMe API to get property listings and using the ThunderMaps API to post reports, and a module that periodically creates Thundermaps reports for the latest TradeMe listings.
+This repository provides Python modules for using the [TradeMe](http://www.trademe.co.nz/) API to get property listings and using the [ThunderMaps](http://thundermaps.com/) API to post reports, and a module that periodically creates Thundermaps reports for the latest TradeMe listings.
 
 Dependencies
 ------------
@@ -94,3 +94,11 @@ properties_updater.start()
 ```
 
 **Important:** The updater module uses `.lastupdate_` files to store the timestamp of the last update for each category. If you delete these files then it will default to generating reports from the current time.
+
+### Current Usage
+
+These modules are currently used in several Thundermaps accounts:
+
+* [TradeMe Properties - Rentals](http://app.thundermaps.com/accounts/trademe-properties)
+* [TradeMe Properties - For Sale](http://app.thundermaps.com/accounts/trademe-properties-for-sale)
+* [TradeMe Properties - Carparks](http://app.thundermaps.com/accounts/trademe-properties-carparks)

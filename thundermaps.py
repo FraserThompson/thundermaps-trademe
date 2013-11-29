@@ -31,10 +31,20 @@ class ThunderMaps:
 	# Get a list of reports from ThunderMaps.
 	def getReports(self, account_id):
 		try:
-			url = "http://app.thundermaps.com/api/reports/"
-			params = {"account_id": account_id, "key": self.key}
-			resp = requests.get(url, params=params)
-			result = resp.json()
+			page = 1
+			more = True
+			result = []
+			while more:
+				url = "http://app.thundermaps.com/api/reports/"
+				params = {"account_id": account_id, "key": self.key, "page": page}
+				print "url=%s params=%s" % (url, params)
+				resp = requests.get(url, params=params)
+				r = resp.json()
+				if len(r) == 0:
+					more = False
+				else:
+					result.extend(r)
+					page = page + 1
 			return result
 		except Exception as e:
 			print "Error getting reports: %s" % e
@@ -50,4 +60,3 @@ class ThunderMaps:
 		except Exception as e:
 			print "Error deleting report %d: %s" % (id, e)
 			return None
-

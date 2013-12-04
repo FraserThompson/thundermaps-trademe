@@ -54,13 +54,13 @@ class TradeMe:
 			try:
 				resp = self.trademe.get(url, params=params)
 				result = resp.json()
+				# Add each rental to the result.
+				for rental in result["List"]:
+					listings.append(rental)
+					count = count + 1
 			except Exception as e:
 				print "Error retrieving listings: %s" % e
 				return listings
-			# Add each rental to the result.
-			for rental in result["List"]:
-				listings.append(rental)
-				count = count + 1
 			# Get next page if there are more listings.
 			if (count >= result["TotalCount"]) or (limit != None and count >= limit):
 				more = None

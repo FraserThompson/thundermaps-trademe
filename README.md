@@ -105,3 +105,4 @@ These modules are currently used in several Thundermaps accounts:
 * [TradeMe Properties - Rentals](http://app.thundermaps.com/accounts/trademe-properties)
 * [TradeMe Properties - For Sale](http://app.thundermaps.com/accounts/trademe-properties-for-sale)
 * [TradeMe Properties - Carparks](http://app.thundermaps.com/accounts/trademe-properties-carparks)
+* [TradeMe Properties - Flatmates Wanted](http://app.thundermaps.com/accounts/trademe-properties-flatmates-wanted)

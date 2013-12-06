@@ -12,13 +12,14 @@ class Updater:
 	def authenticate(self, key, secret, oauth_key, oauth_secret):
 		self.trademe.authenticate(key, secret, oauth_key, oauth_secret)
 
-	def add_category(self, name, trademe_id, account_id, thundermaps_id):
+	def add_category(self, name, trademe_id, account_id, thundermaps_id, trademe_api_path="General"):
 		# Add the category.
 		self.categories[name] = {
 			"trademe_id": trademe_id,
 			"account_id": account_id,
 			"thundermaps_id": thundermaps_id,
-			"since": int(time.time())
+			"since": int(time.time()),
+			"trademe_api_path": trademe_api_path
 		}
 
 		# Try to load the last update time from file.
@@ -37,7 +38,7 @@ class Updater:
 				category = self.categories[category_name]
 
 				# Get listings from TradeMe.
-				listings = self.trademe.getListings(category_id=category["trademe_id"], limit=None, since=category["since"])
+				listings = self.trademe.getListings(category_id=category["trademe_id"], limit=None, since=category["since"], api_path=category["trademe_api_path"])
 
 				# Update timestamp of last update.
 				category["since"] = time.time()

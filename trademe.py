@@ -31,7 +31,7 @@ class TradeMe:
 		self.debug = on
 
 	# Get a list of listings from TradeMe.
-	def getListings(self, category_id, limit=25, since=time.time()-86400):
+	def getListings(self, category_id, limit=25, since=time.time()-86400, api_path="General"):
 		more = True
 		page = None
 		count = 0
@@ -40,7 +40,7 @@ class TradeMe:
 		# While there are more listings to get, get them.
 		while more:
 			# Build URL.
-			url = "http://api.trademe.co.nz/v1/Search/General.json"
+			url = "http://api.trademe.co.nz/v1/Search/%s.json" % api_path
 			params = {"category": category_id}
 			params["rows"] = 500 if limit == None else limit - count
 			if since != None:

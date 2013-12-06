@@ -30,6 +30,8 @@ my_trademe = trademe.TradeMe()
 listings = my_trademe.getListings(category_id=TRADEME_CATEGORY_RENTAL, limit=10)
 ```
 
+If you wish to use a specific TradeMe API search method instead of the general search, then you can use the parameter `api_path` and give a value such as `Property/Rental`.
+
 If you have a TradeMe developer account and have generated an OAuth token and OAuth secret, then you can authenticate with the TradeMe API prior to making a request in order to increase you rate limit and the number of results you can get per API call. E.g.
 
 ```python

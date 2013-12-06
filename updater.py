@@ -51,14 +51,27 @@ class Updater:
 						continue
 					# Include the auction URL in the description.
 					listing_url = "http://www.trademe.co.nz%s/auction-%d.html" % (listing["CategoryPath"], listing["ListingId"])
+					# Create base report.
 					report = {
 						"latitude": listing["GeographicLocation"]["Latitude"],
 						"longitude": listing["GeographicLocation"]["Longitude"],
 						"category_id": category["thundermaps_id"],
 						"occurred_on": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(float(listing["StartDate"][6:-2])/1000)),
-						"description": "%s. See more at %s" % (("%s - %s" % (listing["Address"], listing["Title"]), listing_url) if "Address" in listing.keys() else (listing["Title"], listing_url)),
+						"description": "%s. See more at %s" % (listing["Title"], listing_url),
 						"source_id": "%d" % listing["ListingId"]
 					}
+					# Add as much address information as available.
+					address_parts = []
+					if "Address" in listing.keys():
+						address_parts.append(listing["Address"])
+					if "Suburb" in listing.keys():
+						address_parts.append(listing["Suburb"])
+					if "District" in listing.keys():
+						address_parts.append(listing["District"])
+					if len(address_parts) > 0:
+						address_parts.append("New Zealand")
+						report["address"] = ", ".join(address_parts)
+					# Add the report to the list of reports.
 					reports.append(report)
 				print "Retrieved %d reports for '%s'..." % (len(reports), category_name)
 

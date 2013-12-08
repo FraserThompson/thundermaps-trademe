@@ -49,6 +49,9 @@ class Updater:
 					# Some listings don't have geographic information: ignore these.
 					if "GeographicLocation" not in listing.keys():
 						continue
+					# Some listings don't have any accuracy in the location: ignore these.
+					if listing["GeographicLocation"]["Accuracy"] == "0":
+						continue
 					# Include the auction URL in the description.
 					listing_url = "http://www.trademe.co.nz%s/auction-%d.html" % (listing["CategoryPath"], listing["ListingId"])
 					# Create base report.

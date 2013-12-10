@@ -19,7 +19,8 @@ class Updater:
 			"account_id": account_id,
 			"thundermaps_id": thundermaps_id,
 			"since": int(time.time()),
-			"trademe_api_path": trademe_api_path
+			"trademe_api_path": trademe_api_path,
+			"previous": []
 		}
 
 		# Try to load the last update time from file.
@@ -43,17 +44,27 @@ class Updater:
 				# Update timestamp of last update.
 				category["since"] = time.time()
 
+				# Create a new "previous" list of listing IDs.
+				new_previous = []
+
 				# Create reports for the listings.
 				reports = []
 				for listing in listings:
 					# Some listings don't have geographic information: ignore these.
 					if "GeographicLocation" not in listing.keys():
 						continue
+
 					# Some listings don't have any accuracy in the location: ignore these.
 					if listing["GeographicLocation"]["Accuracy"] == "0":
 						continue
+
+					# If the listing was added in the previous iteration, ignore it.
+					if listing["ListingId"] in category["previous"]:
+						continue
+
 					# Include the auction URL in the description.
 					listing_url = "http://www.trademe.co.nz%s/auction-%d.html" % (listing["CategoryPath"], listing["ListingId"])
+
 					# Create base report.
 					report = {
 						"latitude": listing["GeographicLocation"]["Latitude"],
@@ -63,6 +74,7 @@ class Updater:
 						"description": "%s. See more at %s" % (listing["Title"], listing_url),
 						"source_id": "%d" % listing["ListingId"]
 					}
+
 					# Add as much address information as available.
 					address_parts = []
 					if "Address" in listing.keys():
@@ -74,9 +86,17 @@ class Updater:
 					if len(address_parts) > 0:
 						address_parts.append("New Zealand")
 						report["address"] = ", ".join(address_parts)
+
 					# Add the report to the list of reports.
 					reports.append(report)
+
+					# Add the listing ID to the "previous" list.
+					new_previous.append(listing["ListingId"])
+
 				print "Retrieved %d reports for '%s'..." % (len(reports), category_name)
+
+				# Update the "previous" list.
+				category["previous"] = new_previous
 
 				# If there is at least one report, send the reports to Thundermaps.
 				if len(reports) > 0:

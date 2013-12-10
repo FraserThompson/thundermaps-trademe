@@ -93,7 +93,7 @@ class Updater:
 					# Add the listing ID to the "previous" list.
 					new_previous.append(listing["ListingId"])
 
-				print "Retrieved %d reports for '%s'..." % (len(reports), category_name)
+				print "[%s] Retrieved %d reports for '%s'..." % (time.strftime("%c"), len(reports), category_name)
 
 				# Update the "previous" list.
 				category["previous"] = new_previous
@@ -103,7 +103,7 @@ class Updater:
 					# Upload 10 at a time.
 					for some_reports in [reports[i:i+10] for i in range(0, len(reports), 10)]:
 						self.thundermaps.sendReports(category["account_id"], some_reports)
-						print "Submitted %d reports..." % len(some_reports)
+						print "[%s] Submitted %d reports..." % (time.strftime("%c"), len(some_reports))
 
 				# Save the timestamp of the last update.
 				try:

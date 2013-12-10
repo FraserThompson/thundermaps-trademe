@@ -49,7 +49,7 @@ class TradeMe:
 				params["page"] = page
 			# Print debug information in debug mode.
 			if self.debug == True:
-				print "trademe: [url=%s, params=%s]" % (url, params)
+				print "[%s] trademe: [url=%s, params=%s]" % (time.strftime("%c"), url, params)
 			# Peform the request.
 			try:
 				resp = self.trademe.get(url, params=params)
@@ -62,7 +62,7 @@ class TradeMe:
 						listings.append(listing)
 					count = count + 1
 			except Exception as e:
-				print "Error retrieving listings: %s" % e
+				print "[%s] Error retrieving listings: %s" % (time.strftime("%c"), e)
 				return listings
 			# Get next page if there are more listings.
 			if (count >= result["TotalCount"]) or (limit != None and count >= limit):

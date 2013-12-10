@@ -9,6 +9,7 @@
 
 import requests
 import json
+import time
 
 class ThunderMaps:
 	# Create a new ThunderMaps instance with the API key.
@@ -25,7 +26,7 @@ class ThunderMaps:
 			resp = requests.post(url, params=params, data=data, headers=headers)
 			return resp
 		except Exception as e:
-			print "Error creating reports: %s" % e
+			print "[%s] Error creating reports: %s" % (time.strftime("%c"), e)
 			return None
 
 	# Get a list of reports from ThunderMaps.
@@ -47,7 +48,7 @@ class ThunderMaps:
 					page = page + 1
 			return result
 		except Exception as e:
-			print "Error getting reports: %s" % e
+			print "[%s] Error getting reports: %s" % (time.strftime("%c"), e)
 			return None
 
 	# Delete a specific report from ThunderMaps.
@@ -58,5 +59,5 @@ class ThunderMaps:
 			resp = requests.delete(url, params=params)
 			return resp
 		except Exception as e:
-			print "Error deleting report %d: %s" % (id, e)
+			print "[%s] Error deleting report: %s" % (time.strftime("%c"), id, e)
 			return None

@@ -55,8 +55,11 @@ class TradeMe:
 				resp = self.trademe.get(url, params=params)
 				result = resp.json()
 				# Add each rental to the result.
-				for rental in result["List"]:
-					listings.append(rental)
+				for listing in result["List"]:
+					# Only include the listing if it is in the category or subcategory of the desired category.
+					categories = listing["Category"].split("-")
+					if str(category_id) in categories:
+						listings.append(listing)
 					count = count + 1
 			except Exception as e:
 				print "Error retrieving listings: %s" % e

@@ -12,15 +12,22 @@ import json
 import time
 
 class ThunderMaps:
+	# Which server to use. "app" is the production server, "staging" is the staging server.
+	server = "app"
+
 	# Create a new ThunderMaps instance with the API key.
 	def __init__(self, key):
 		self.key = key
+
+	# Set whether to use the staging server.
+	def staging(self, on=True):
+		self.server = "staging" if on else "api"
 
 	# Send a list of reports to ThunderMaps.
 	def sendReports(self, account_id, reports):
 		try:
 			data = json.dumps({"reports": reports})
-			url = "http://app.thundermaps.com/api/reports/"
+			url = "http://%s.thundermaps.com/api/reports/" % self.server
 			params = {"account_id": account_id, "key": self.key}
 			headers = {"Content-Type": "application/json"}
 			resp = requests.post(url, params=params, data=data, headers=headers)
@@ -36,7 +43,7 @@ class ThunderMaps:
 			more = True
 			result = []
 			while more:
-				url = "http://app.thundermaps.com/api/reports/"
+				url = "http://%s.thundermaps.com/api/reports/" % self.server
 				params = {"account_id": account_id, "key": self.key, "page": page}
 				print "url=%s params=%s" % (url, params)
 				resp = requests.get(url, params=params)
@@ -54,7 +61,7 @@ class ThunderMaps:
 	# Delete a specific report from ThunderMaps.
 	def deleteReport(self, report_id):
 		try:
-			url = "http://app.thundermaps.com/api/reports/%d/" % report_id
+			url = "http://%s.thundermaps.com/api/reports/%d/" % (self.server, report_id)
 			params = {"key": self.key}
 			resp = requests.delete(url, params=params)
 			return resp

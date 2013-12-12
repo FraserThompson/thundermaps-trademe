@@ -70,6 +70,8 @@ my_thundermaps = thundermaps.ThunderMaps(THUNDERMAPS_API_KEY)
 reports = thundermaps.getReports(ACCOUNT_ID)
 ```
 
+**There are several examples in the `examples` directory which show how to deal with different types of datafeeds.**
+
 ### Updater module
 
 The updater module combines both the TradeMe and ThunderMaps module and provides a higher level interface for generating ThunderMaps reports for the latest TradeMe listings.

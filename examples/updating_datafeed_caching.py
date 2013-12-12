@@ -18,6 +18,7 @@ THUNDERMAPS_CATEGORY_ID = ...
 tm = thundermaps.ThunderMaps(THUNDERMAPS_API_KEY)
 
 # Try to load the source_ids already posted.
+source_ids = []
 try:
 	source_ids_file = open(".source_ids_sample", "r")
 	source_ids = [i.strip() for i in source_ids_file.readlines()]

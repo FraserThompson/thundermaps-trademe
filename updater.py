@@ -12,7 +12,7 @@ class Updater:
 	def authenticate(self, key, secret, oauth_key, oauth_secret):
 		self.trademe.authenticate(key, secret, oauth_key, oauth_secret)
 
-	def add_category(self, name, trademe_id, account_id, thundermaps_id, trademe_api_path="General"):
+	def add_category(self, name, trademe_id, account_id, thundermaps_id, trademe_api_path="General", subcategories={}):
 		# Add the category.
 		self.categories[name] = {
 			"trademe_id": trademe_id,
@@ -20,6 +20,7 @@ class Updater:
 			"thundermaps_id": thundermaps_id,
 			"since": int(time.time()),
 			"trademe_api_path": trademe_api_path,
+			"subcategories": subcategories,
 			"previous": []
 		}
 
@@ -87,6 +88,13 @@ class Updater:
 						address_parts.append("New Zealand")
 						report["address"] = ", ".join(address_parts)
 
+					# Add subcategory information if listing matches any of the defined subcatgories.
+					listing_categories = listing["Category"].split("-")
+					for trademe_category, thundermaps_category in category["subcategories"].iteritems():
+						if str(trademe_category) in listing_categories:
+							report["category_id"] = thundermaps_category
+							break
+
 					# Add the report to the list of reports.
 					reports.append(report)
 
@@ -104,6 +112,7 @@ class Updater:
 					for some_reports in [reports[i:i+10] for i in range(0, len(reports), 10)]:
 						self.thundermaps.sendReports(category["account_id"], some_reports)
 						print "[%s] Submitted %d reports..." % (time.strftime("%c"), len(some_reports))
+						time.sleep(3)
 
 				# Save the timestamp of the last update.
 				try:

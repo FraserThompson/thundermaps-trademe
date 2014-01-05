@@ -21,7 +21,7 @@ class ThunderMaps:
 
 	# Set whether to use the staging server.
 	def staging(self, on=True):
-		self.server = "staging" if on else "api"
+		self.server = "staging" if on else "app"
 
 	# Send a list of reports to ThunderMaps.
 	def sendReports(self, account_id, reports):

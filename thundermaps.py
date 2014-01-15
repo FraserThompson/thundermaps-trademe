@@ -12,8 +12,8 @@ import json
 import time
 
 class ThunderMaps:
-	# Which server to use. "app" is the production server, "staging" is the staging server.
-	server = "app"
+	# Which server to use. "www" is the production server, "staging" is the staging server.
+	server = "www"
 
 	# Create a new ThunderMaps instance with the API key.
 	def __init__(self, key):
@@ -21,7 +21,7 @@ class ThunderMaps:
 
 	# Set whether to use the staging server.
 	def staging(self, on=True):
-		self.server = "staging" if on else "app"
+		self.server = "staging" if on else "www"
 
 	# Send a list of reports to ThunderMaps.
 	def sendReports(self, account_id, reports):

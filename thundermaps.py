@@ -68,3 +68,16 @@ class ThunderMaps:
 		except Exception as e:
 			print "[%s] Error deleting report: %s" % (time.strftime("%c"), id, e)
 			return None
+
+	# Upload an image to ThunderMaps and return the attachment ID.
+	def uploadImage(self, image_url):
+		try:
+			data = json.dumps({"attachment": {"attachment": image_url, "from_url": True, "type": "ReportImage"}})
+			url = "http://%s.thundermaps.com/api/attachments/" % self.server
+			params = {"key": self.key}
+			headers = {"Content-Type": "application/json"}
+			resp = requests.post(url, params=params, data=data, headers=headers)
+			return resp.json()["id"]
+		except Exception as e:
+			print "[%s] Error uploading image: %s" % (time.strftime("%c"), e)
+			return None

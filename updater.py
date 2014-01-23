@@ -95,6 +95,10 @@ class Updater:
 							report["category_id"] = thundermaps_category
 							break
 
+					# Add the URL for the image if there is one.
+					if "PictureHref" in listing.keys():
+						report["attachment_url"] = listing["PictureHref"]
+
 					# Add the report to the list of reports.
 					reports.append(report)
 
@@ -110,6 +114,15 @@ class Updater:
 				if len(reports) > 0:
 					# Upload 10 at a time.
 					for some_reports in [reports[i:i+10] for i in range(0, len(reports), 10)]:
+						# Upload images for this batch of reports.
+						for report in some_reports:
+							if "attachment_url" in report.keys():
+								image_id = self.thundermaps.uploadImage(report["attachment_url"])
+								if image_id != None:
+									print "[%s] Uploaded image for listing %s..." % (time.strftime("%c"), report["source_id"])
+									report["attachment_ids"] = [image_id]
+								del report["attachment_url"]
+						# Upload reports.
 						self.thundermaps.sendReports(category["account_id"], some_reports)
 						print "[%s] Submitted %d reports..." % (time.strftime("%c"), len(some_reports))
 						time.sleep(3)

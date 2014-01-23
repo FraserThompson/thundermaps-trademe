@@ -43,6 +43,7 @@ class TradeMe:
 			url = "http://api.trademe.co.nz/v1/Search/%s.json" % api_path
 			params = {"category": category_id}
 			params["rows"] = 500 if limit == None else limit - count
+			params["photo_size"] = "Large"
 			if since != None:
 				params["date_from"] = datetime.datetime.utcfromtimestamp(since).strftime('%Y-%m-%dT%H:%M:%SZ')
 			if page != None:

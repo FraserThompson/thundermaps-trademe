@@ -72,7 +72,7 @@ class Updater:
 						"longitude": listing["GeographicLocation"]["Longitude"],
 						"category_id": category["thundermaps_id"],
 						"occurred_on": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(float(listing["StartDate"][6:-2])/1000)),
-						"description": "%s. See more at %s" % (listing["Title"], listing_url),
+						"description": "%s. See more at <a href=\"%s\">%s</a>." % (listing["Title"], listing_url, listing_url),
 						"source_id": "%d" % listing["ListingId"]
 					}
 
